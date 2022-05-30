@@ -1,0 +1,8 @@
+davwheat-blog-featured-panel:
+  forum:
+    widget:
+      title: Featured blog articles
+
+      scrollers:
+        left: Scroll left
+        right: Scroll right
