@@ -1,7 +1,11 @@
-davwheat-blog-featured-panel:
+davwheat-blog-featured-widget:
   forum:
     widget:
       title: Featured blog articles
+
+      status:
+        error: Failed to load blog articles
+        no_data: There are no featured blog articles
 
       scrollers:
         left: Scroll left

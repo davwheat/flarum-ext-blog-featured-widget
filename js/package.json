@@ -1,5 +1,5 @@
 {
-    "name": "@davwheat/blog-featured-panel",
+    "name": "@davwheat/blog-featured-widget",
     "private": true,
     "devDependencies": {
         "@flarum/prettier-config": "^1.0.0",

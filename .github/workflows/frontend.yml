@@ -1,4 +1,4 @@
-name: Davwheat Blog Featured Panel JS
+name: Davwheat Blog Featured Widget JS
 
 on: [workflow_dispatch, push, pull_request]
 

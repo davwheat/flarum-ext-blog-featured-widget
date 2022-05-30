@@ -1,4 +1,4 @@
-name: Davwheat Blog Featured Panel PHP
+name: Davwheat Blog Featured Widget PHP
 
 on: [workflow_dispatch, push, pull_request]
 

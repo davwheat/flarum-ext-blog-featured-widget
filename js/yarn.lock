@@ -1390,9 +1390,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@davwheat/blog-featured-panel@workspace:.":
+"@davwheat/blog-featured-widget@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@davwheat/blog-featured-panel@workspace:."
+  resolution: "@davwheat/blog-featured-widget@workspace:."
   dependencies:
     "@flarum/prettier-config": ^1.0.0
     flarum-tsconfig: ^1.0.2

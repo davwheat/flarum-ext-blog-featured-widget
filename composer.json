@@ -1,5 +1,5 @@
 {
-  "name": "davwheat/blog-featured-panel",
+  "name": "davwheat/blog-featured-widget",
   "description": "Show a list of featured blog articles on your forum.",
   "keywords": [
     "flarum"
@@ -8,7 +8,8 @@
   "license": "MIT",
   "require": {
     "flarum/core": "^1.2.0",
-    "afrux/forum-widgets-core": "^0.1.0"
+    "afrux/forum-widgets-core": "^0.1.0",
+    "v17development/flarum-blog": ">=0.6.0"
   },
   "authors": [
     {
@@ -19,7 +20,7 @@
   ],
   "extra": {
     "flarum-extension": {
-      "title": "davwheat Blog Featured Panel",
+      "title": "davwheat Blog Featured Widget",
       "category": "feature",
       "icon": {
         "name": "fas fa-th-large",

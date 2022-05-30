@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of davwheat/blog-featured-panel.
+ * This file is part of davwheat/blog-featured-widget.
  *
  * Copyright (c) 2022 David Wheatley.
  *
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Davwheat\BlogFeaturedPanel;
+namespace Davwheat\BlogFeaturedWidget;
 
 use Flarum\Extend;
 

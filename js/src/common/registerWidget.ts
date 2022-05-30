@@ -15,5 +15,5 @@ export default function registerWidget() {
       placement: 'top',
       position: 1,
     })
-    .extend(app, 'davwheat-blog-featured-panel');
+    .extend(app, 'davwheat-blog-featured-widget');
 }

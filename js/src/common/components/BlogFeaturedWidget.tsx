@@ -34,7 +34,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
   }
 
   title() {
-    return extractText(app.translator.trans('davwheat-blog-featured-panel.forum.widget.title'));
+    return extractText(app.translator.trans('davwheat-blog-featured-widget.forum.widget.title'));
   }
 
   oncreate(vnode: Mithril.VnodeDOM<any, this>): void {
@@ -61,7 +61,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
           class="Button Button--icon BlogFeaturedWidget-scrollButton"
           icon="fas fa-chevron-left"
           disabled={listScrolledLeft}
-          aria-label={app.translator.trans('davwheat-blog-featured-panel.forum.widget.scrollers.left')}
+          aria-label={app.translator.trans('davwheat-blog-featured-widget.forum.widget.scrollers.left')}
           onclick={() => {
             this.$('.BlogFeaturedWidget-articleList')[0].scrollLeft -= 316;
           }}
@@ -70,7 +70,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
           class="Button Button--icon BlogFeaturedWidget-scrollButton"
           icon="fas fa-chevron-right"
           disabled={listScrolledRight}
-          aria-label={app.translator.trans('davwheat-blog-featured-panel.forum.widget.scrollers.right')}
+          aria-label={app.translator.trans('davwheat-blog-featured-widget.forum.widget.scrollers.right')}
           onclick={() => {
             this.$('.BlogFeaturedWidget-articleList')[0].scrollLeft += 316;
           }}
@@ -97,7 +97,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
       case LoadingState.failed:
         return (
           <div class="BlogFeaturedWidget-loadStatusMessage Placeholder">
-            <p>Failed to load blog articles.</p>
+            <p>{app.translator.trans('davwheat-blog-featured-widget.forum.widget.status.error')}</p>
           </div>
         );
 
@@ -106,7 +106,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
 
         return (
           <div class="BlogFeaturedWidget-loadStatusMessage Placeholder">
-            <p>There are no featured blog articles.</p>
+            <p>{app.translator.trans('davwheat-blog-featured-widget.forum.widget.status.no_data')}</p>
           </div>
         );
     }
