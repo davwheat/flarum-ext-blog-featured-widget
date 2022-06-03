@@ -6,14 +6,17 @@ import icon from 'flarum/common/helpers/icon';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import Button from 'flarum/common/components/Button';
 
-import Widget, { WidgetAttrs } from 'flarum/extensions/afrux-forum-widgets-core/common/components/Widget';
+import Widget, {WidgetAttrs} from 'flarum/extensions/afrux-forum-widgets-core/common/components/Widget';
 
+// @ts-expect-error no v17 Blog typings available
 import FeaturedBlogItem from 'flarum/v17development/blog/components/FeaturedBlogItem';
 
 import type Discussion from 'flarum/common/models/Discussion';
 import type Mithril from 'mithril';
+import {ApiQueryParamsPlural} from "flarum/common/Store";
 
-interface IBlogFeaturedWidgetAttrs extends WidgetAttrs {}
+interface IBlogFeaturedWidgetAttrs extends WidgetAttrs {
+}
 
 enum LoadingState {
   loading,
@@ -84,7 +87,8 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
       <div className="BlogFeaturedWidget-widgetContent">
         {this.loadingStatusMessage()}
 
-        {this.loadingState === LoadingState.loaded && <div class="BlogFeaturedWidget-articleList">{this.data.map((d) => this.blogItem(d))}</div>}
+        {this.loadingState === LoadingState.loaded &&
+          <div class="BlogFeaturedWidget-articleList">{this.data.map((d) => this.blogItem(d))}</div>}
       </div>
     );
   }
@@ -92,7 +96,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
   loadingStatusMessage(): Mithril.Children {
     switch (this.loadingState) {
       case LoadingState.loading:
-        return <LoadingIndicator />;
+        return <LoadingIndicator/>;
 
       case LoadingState.failed:
         return (
@@ -112,9 +116,30 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
     }
   }
 
+  requestParams(): ApiQueryParamsPlural {
+    const languages = app.store.all('discussion-languages');
+    // @ts-expect-error formatter is internal api, but there is no public api method to fetch this
+    // TODO: [Flarum 1.4] see https://github.com/flarum/framework/pull/3451
+    const selectedLanguage = m.route.param('lang') ? m.route.param('lang') : app.translator.formatter.locale;
+
+    const params = {
+      filter: {q: 'is:blog'},
+      sort: '-createdAt',
+      page: {
+        limit: 9
+      }
+    }
+
+    if (languages?.length) {
+      params.filter.q += ` language:${selectedLanguage}`
+    }
+
+    return params
+  }
+
   async loadData() {
     try {
-      const data = await app.store.find<Discussion[]>('discussions', { filter: { q: 'is:blog' }, sort: '-createdAt', page: { limit: 9 } });
+      const data = await app.store.find<Discussion[]>('discussions', this.requestParams());
 
       if (data) {
         this.data = data;
@@ -132,6 +157,6 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
       ? `url(${app.forum.attribute('baseUrl') + '/assets/' + app.forum.attribute('blogDefaultImage')})`
       : null;
 
-    return <FeaturedBlogItem article={discussion} defaultImage={defaultImage} />;
+    return <FeaturedBlogItem article={discussion} defaultImage={defaultImage}/>;
   }
 }
