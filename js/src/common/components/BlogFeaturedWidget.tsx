@@ -46,6 +46,31 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
     this.loadData();
   }
 
+  protected shouldRemoveFromPage(attr: string, extension?: string) {
+    if (!extension || extension in flarum.extensions) {
+      return !app.forum.attribute<boolean>(`davwheat-blog-featured-widget.${attr}`);
+    }
+
+    return false;
+  }
+
+  view(): Mithril.Children {
+    if (this.shouldRemoveFromPage('show_on_tag_pages', 'flarum-tags')) {
+      if (app.current.data.routeName === 'tag') return null;
+    }
+    if (this.shouldRemoveFromPage('show_on_following_page', 'flarum-subscriptions')) {
+      if (app.current.data.routeName === 'following') return null;
+    }
+    if (this.shouldRemoveFromPage('show_on_byobu_page', 'fof-byobu')) {
+      if (app.current.data.routeName === 'byobuPrivate') return null;
+    }
+    if (this.shouldRemoveFromPage('show_on_bookmarks_page', 'clarkwinkelmann-bookmarks')) {
+      if (app.current.data.routeName === 'bookmarks') return null;
+    }
+
+    return super.view();
+  }
+
   header() {
     const iconName = this.icon();
 
@@ -135,7 +160,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
     };
 
     if (languages?.length) {
-      params.filter.q += ` language:${selectedLanguage}`
+      params.filter.q += ` language:${selectedLanguage}`;
     }
 
     return params;

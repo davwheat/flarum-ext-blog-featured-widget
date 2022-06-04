@@ -1,4 +1,14 @@
 davwheat-blog-featured-widget:
+  admin:
+    settings:
+      location_note: |
+        This widget is only designed to be used in the "top" position in Afrux widgets. Please do
+        not submit support requests if you are using it in other positions as these will be closed.
+
+      show_on_tag_pages: Show on tag discussion list pages
+      show_on_following_page: Show on 'Following' page
+      show_on_byobu_page: Show on Byobu discussion list page
+      show_on_bookmarks_page: Show on Bookmarks page
   forum:
     widget:
       title: Blog
