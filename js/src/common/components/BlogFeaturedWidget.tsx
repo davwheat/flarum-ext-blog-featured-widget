@@ -81,7 +81,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
 
     return (
       <div class="AfruxWidgets-Widget-title">
-        {iconName ? <span class="AfruxWidgets-Widget-title-icon">{icon(iconName)}</span> : null}
+        {iconName ? <span class="AfruxWidgets-Widget-title-icon BlogFeaturedWidget-titleIcon">{icon(iconName)}</span> : null}
         <span class="AfruxWidgets-Widget-title-label BlogFeaturedWidget-title">{this.title()}</span>
         <span class="AfruxWidgets-Widget-title-label BlogFeaturedWidget-titleSeparator" aria-hidden="true">
           &bull;
