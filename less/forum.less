@@ -34,6 +34,22 @@
     vertical-align: middle;
   }
 
+  &-moreLinkIcon {
+    margin-left: 8px;
+
+    transform: translateX(0);
+    transition: transform 0.17s ease-out;
+  }
+
+  &-moreLink {
+    &:hover,
+    &:focus {
+      .BlogFeaturedWidget-moreLinkIcon {
+        transform: translateX(4px);
+      }
+    }
+  }
+
   &-articleList {
     display: flex;
     overflow-x: auto;

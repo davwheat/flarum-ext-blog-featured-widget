@@ -88,6 +88,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
         </span>
         <Link href={app.route('blog')} class="AfruxWidgets-Widget-title-label BlogFeaturedWidget-moreLink">
           {app.translator.trans('davwheat-blog-featured-widget.forum.widget.more_blog_link')}
+          {icon('fas fa-arrow-right', { className: 'BlogFeaturedWidget-moreLinkIcon' })}
         </Link>
 
         <Button
