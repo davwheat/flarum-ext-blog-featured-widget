@@ -27,6 +27,12 @@ enum LoadingState {
 export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs> {
   data: Discussion[] = [];
   loadingState: LoadingState = LoadingState.loading;
+  boundOnScroll!: BlogFeaturedWidget['onScroll'];
+
+  stateData: { listScrolledLeft: boolean; listScrolledRight: boolean } = {
+    listScrolledLeft: true,
+    listScrolledRight: false,
+  };
 
   className() {
     return 'BlogFeaturedWidget-widget';
@@ -44,6 +50,19 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
     super.oncreate(vnode);
 
     this.loadData();
+
+    this.boundOnScroll = this.onScroll.bind(this);
+    this.$('.BlogFeaturedWidget-articleList')[0]?.addEventListener('scroll', this.boundOnScroll, { passive: true });
+  }
+
+  onupdate(vnode: Mithril.VnodeDOM<any, this>): void {
+    this.$('.BlogFeaturedWidget-articleList')[0]?.removeEventListener('scroll', this.boundOnScroll);
+    this.$('.BlogFeaturedWidget-articleList')[0]?.addEventListener('scroll', this.boundOnScroll, { passive: true });
+  }
+
+  onremove(vnode: Mithril.VnodeDOM<any, this>): void {
+    super.onremove(vnode);
+    this.$('.BlogFeaturedWidget-articleList')[0]?.removeEventListener('scroll', this.boundOnScroll);
   }
 
   protected shouldRemoveFromPage(attr: string, extension?: string) {
@@ -71,13 +90,19 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
     return super.view();
   }
 
-  header() {
-    const iconName = this.icon();
-
+  onScroll() {
     const listEl: HTMLElement | undefined = this.$('.BlogFeaturedWidget-articleList')[0];
 
-    const listScrolledLeft = (listEl?.scrollLeft ?? 0) === 0;
-    const listScrolledRight = listEl?.scrollWidth - listEl?.clientWidth - listEl?.scrollLeft === 0;
+    const oldState = { ...this.stateData };
+
+    this.stateData.listScrolledLeft = (listEl?.scrollLeft ?? 0) === 0;
+    this.stateData.listScrolledRight = listEl?.scrollWidth - listEl?.clientWidth - listEl?.scrollLeft === 0;
+
+    if (oldState.listScrolledLeft !== this.stateData.listScrolledLeft || oldState.listScrolledRight !== this.stateData.listScrolledRight) m.redraw();
+  }
+
+  header() {
+    const iconName = this.icon();
 
     return (
       <div class="AfruxWidgets-Widget-title">
@@ -94,7 +119,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
         <Button
           class="Button Button--icon BlogFeaturedWidget-scrollButton"
           icon="fas fa-chevron-left"
-          disabled={listScrolledLeft}
+          disabled={this.stateData.listScrolledLeft}
           aria-label={app.translator.trans('davwheat-blog-featured-widget.forum.widget.scrollers.left')}
           onclick={() => {
             this.$('.BlogFeaturedWidget-articleList')[0].scrollLeft -= 316;
@@ -103,7 +128,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
         <Button
           class="Button Button--icon BlogFeaturedWidget-scrollButton"
           icon="fas fa-chevron-right"
-          disabled={listScrolledRight}
+          disabled={this.stateData.listScrolledRight}
           aria-label={app.translator.trans('davwheat-blog-featured-widget.forum.widget.scrollers.right')}
           onclick={() => {
             this.$('.BlogFeaturedWidget-articleList')[0].scrollLeft += 316;
