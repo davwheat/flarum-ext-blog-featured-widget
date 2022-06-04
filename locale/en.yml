@@ -1,7 +1,8 @@
 davwheat-blog-featured-widget:
   forum:
     widget:
-      title: Featured blog articles
+      title: Blog
+      more_blog_link: See more
 
       status:
         error: Failed to load blog articles

@@ -5,18 +5,18 @@ import icon from 'flarum/common/helpers/icon';
 
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import Button from 'flarum/common/components/Button';
+import Link from 'flarum/common/components/Link';
 
-import Widget, {WidgetAttrs} from 'flarum/extensions/afrux-forum-widgets-core/common/components/Widget';
+import Widget, { WidgetAttrs } from 'flarum/extensions/afrux-forum-widgets-core/common/components/Widget';
 
 // @ts-expect-error no v17 Blog typings available
 import FeaturedBlogItem from 'flarum/v17development/blog/components/FeaturedBlogItem';
 
 import type Discussion from 'flarum/common/models/Discussion';
 import type Mithril from 'mithril';
-import {ApiQueryParamsPlural} from "flarum/common/Store";
+import { ApiQueryParamsPlural } from 'flarum/common/Store';
 
-interface IBlogFeaturedWidgetAttrs extends WidgetAttrs {
-}
+interface IBlogFeaturedWidgetAttrs extends WidgetAttrs {}
 
 enum LoadingState {
   loading,
@@ -48,17 +48,22 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
 
   header() {
     const iconName = this.icon();
-    const title = this.title();
 
     const listEl: HTMLElement | undefined = this.$('.BlogFeaturedWidget-articleList')[0];
 
     const listScrolledLeft = (listEl?.scrollLeft ?? 0) === 0;
     const listScrolledRight = listEl?.scrollWidth - listEl?.clientWidth - listEl?.scrollLeft === 0;
 
-    return title ? (
-      <div className="AfruxWidgets-Widget-title">
-        {iconName ? <span className="AfruxWidgets-Widget-title-icon">{icon(iconName)}</span> : null}
-        <span className="AfruxWidgets-Widget-title-label">{title}</span>
+    return (
+      <div class="AfruxWidgets-Widget-title">
+        {iconName ? <span class="AfruxWidgets-Widget-title-icon">{icon(iconName)}</span> : null}
+        <span class="AfruxWidgets-Widget-title-label BlogFeaturedWidget-title">{this.title()}</span>
+        <span class="AfruxWidgets-Widget-title-label BlogFeaturedWidget-titleSeparator" aria-hidden="true">
+          &bull;
+        </span>
+        <Link href={app.route('blog')} class="AfruxWidgets-Widget-title-label BlogFeaturedWidget-moreLink">
+          {app.translator.trans('davwheat-blog-featured-widget.forum.widget.more_blog_link')}
+        </Link>
 
         <Button
           class="Button Button--icon BlogFeaturedWidget-scrollButton"
@@ -79,7 +84,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
           }}
         />
       </div>
-    ) : null;
+    );
   }
 
   content() {
@@ -87,8 +92,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
       <div className="BlogFeaturedWidget-widgetContent">
         {this.loadingStatusMessage()}
 
-        {this.loadingState === LoadingState.loaded &&
-          <div class="BlogFeaturedWidget-articleList">{this.data.map((d) => this.blogItem(d))}</div>}
+        {this.loadingState === LoadingState.loaded && <div class="BlogFeaturedWidget-articleList">{this.data.map((d) => this.blogItem(d))}</div>}
       </div>
     );
   }
@@ -96,7 +100,7 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
   loadingStatusMessage(): Mithril.Children {
     switch (this.loadingState) {
       case LoadingState.loading:
-        return <LoadingIndicator/>;
+        return <LoadingIndicator />;
 
       case LoadingState.failed:
         return (
@@ -123,18 +127,18 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
     const selectedLanguage = m.route.param('lang') ? m.route.param('lang') : app.translator.formatter.locale;
 
     const params = {
-      filter: {q: 'is:blog'},
+      filter: { q: 'is:blog' },
       sort: '-createdAt',
       page: {
-        limit: 9
-      }
-    }
+        limit: 9,
+      },
+    };
 
     if (languages?.length) {
       params.filter.q += ` language:${selectedLanguage}`
     }
 
-    return params
+    return params;
   }
 
   async loadData() {
@@ -157,6 +161,6 @@ export default class BlogFeaturedWidget extends Widget<IBlogFeaturedWidgetAttrs>
       ? `url(${app.forum.attribute('baseUrl') + '/assets/' + app.forum.attribute('blogDefaultImage')})`
       : null;
 
-    return <FeaturedBlogItem article={discussion} defaultImage={defaultImage}/>;
+    return <FeaturedBlogItem article={discussion} defaultImage={defaultImage} />;
   }
 }
